@@ -78,6 +78,13 @@ class WC_API_Framework_Admin_Settings {
         <div class="wrap">
             <h1><?php echo __('WC API Framework Settings', 'wc-api-framework'); ?></h1>
             
+            <div class="notice notice-info">
+                <p>
+                    <strong><?php echo __('Framework Version:', 'wc-api-framework'); ?></strong>
+                    <?php echo esc_html(WC_API_FRAMEWORK_VERSION . ' (Build ' . WC_API_FRAMEWORK_BUILD . ')'); ?>
+                </p>
+            </div>
+            
             <?php if ($active_extension): ?>
                 <div class="notice notice-info">
                     <p>
