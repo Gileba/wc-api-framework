@@ -16,56 +16,17 @@ defined('ABSPATH') || exit();
 class WC_API_Framework_Cache_Manager {
     
     /**
-     * Get plugin options with static caching
+     * Get cache duration for a specific type
+     * This method will be called by extensions with their specific cache types
      *
-     * @return array
-     */
-    private static function get_plugin_options() {
-        static $options_cache = null;
-        if ($options_cache === null) {
-            $options_cache = get_option('wc_api_framework_options', array());
-        }
-        return $options_cache;
-    }
-    
-    /**
-     * Get cache duration for stock data
-     *
+     * @param string $type
+     * @param int $default
      * @return int
      */
-    public static function get_stock_cache_duration() {
-        $options = self::get_plugin_options();
-        return absint($options['stock_cache_duration'] ?? 3600);
-    }
-    
-    /**
-     * Get cache duration for price data
-     *
-     * @return int
-     */
-    public static function get_price_cache_duration() {
-        $options = self::get_plugin_options();
-        return absint($options['price_cache_duration'] ?? 7200);
-    }
-    
-    /**
-     * Get cache duration for unknown product retry
-     *
-     * @return int
-     */
-    public static function get_unknown_retry_duration() {
-        $options = self::get_plugin_options();
-        return absint($options['unknown_retry_duration'] ?? 86400);
-    }
-    
-    /**
-     * Get cache duration for unknown product cleanup
-     *
-     * @return int
-     */
-    public static function get_unknown_cleanup_duration() {
-        $options = self::get_plugin_options();
-        return absint($options['unknown_cleanup_duration'] ?? 604800);
+    public static function get_cache_duration($type, $default = 3600) {
+        $options = get_option('wc_api_framework_options', array());
+        $key = $type . '_cache_duration';
+        return absint($options[$key] ?? $default);
     }
     
     /**
