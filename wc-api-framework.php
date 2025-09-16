@@ -14,6 +14,7 @@
  * Requires PHP: 7.4
  * WC requires at least: 3.0
  * WC tested up to: 10.1.2
+ * Requires Plugins: woocommerce/woocommerce.php
  */
 
 defined("ABSPATH") || exit();

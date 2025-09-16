@@ -94,10 +94,3 @@ msgstr[1] ""
 msgid "WooCommerce is required for this plugin to work."
 msgstr ""
 
-#: includes/class-helpers.php:63
-msgid "Deactivate"
-msgstr ""
-
-#: includes/class-helpers.php:121
-msgid "WooCommerce cannot be deactivated while the WC API Framework or its extensions are active. Please deactivate the framework and all extensions first."
-msgstr ""
