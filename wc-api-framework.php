@@ -3,7 +3,7 @@
  * Plugin Name: WC API Framework
  * Plugin URI: https://www.gileba.be
  * Description: A flexible framework for integrating external APIs with WooCommerce
- * Version: 1.0.0-alpha.2 (build 1)
+ * Version: 1.0.0-alpha.2 (build 7)
  * Author: Gileba
  * Author URI: https://www.gileba.be
  * License: GPL2
@@ -30,7 +30,7 @@ defined("ABSPATH") || exit();
 
 // Define plugin constants
 define('WC_API_FRAMEWORK_VERSION', '1.0.0-alpha.2');
-define('WC_API_FRAMEWORK_BUILD', '1');
+define('WC_API_FRAMEWORK_BUILD', '7');
 define('WC_API_FRAMEWORK_PLUGIN_FILE', __FILE__);
 define('WC_API_FRAMEWORK_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('WC_API_FRAMEWORK_PLUGIN_SLUG', 'wc-api-framework');
@@ -49,12 +49,24 @@ add_action('init', array('WC_API_Framework_Helpers', 'load_textdomain'));
 // Initialize plugin
 add_action('plugins_loaded', 'wc_api_framework_init');
 
+// Register deactivation hook to handle WooCommerce dependency
+register_deactivation_hook(__FILE__, 'wc_api_framework_deactivate');
+
 /**
  * Initialize the plugin
  */
 function wc_api_framework_init() {
     // Check if WooCommerce is active
     add_action('admin_init', array('WC_API_Framework_Helpers', 'check_woocommerce'));
+
+    // Prevent WooCommerce deactivation when our plugin is active
+    add_filter('plugin_action_links', array('WC_API_Framework_Helpers', 'prevent_woocommerce_deactivation'), 10, 2);
+    
+    // Add explanatory row below WooCommerce plugin
+    add_action('after_plugin_row_woocommerce/woocommerce.php', array('WC_API_Framework_Helpers', 'add_woocommerce_dependency_row'), 10, 2);
+    
+    // Add custom admin styles for dependency notice
+    add_action('admin_head', array('WC_API_Framework_Helpers', 'add_admin_styles'));
 
     // Declare HPOS compatibility
     add_action('before_woocommerce_init', array('WC_API_Framework_Helpers', 'declare_hpos_compatibility'));
@@ -67,4 +79,19 @@ function wc_api_framework_init() {
 
     // Initialize WooCommerce hooks
     WC_API_Framework_WooCommerce_Hooks::init();
+}
+
+/**
+ * Handle plugin deactivation
+ */
+function wc_api_framework_deactivate() {
+    // Clear any cached data
+    if (class_exists('WC_API_Framework_Cache_Manager')) {
+        WC_API_Framework_Cache_Manager::clear_all_cache();
+    }
+    
+    // Log deactivation
+    if (class_exists('WC_API_Framework_Helpers')) {
+        WC_API_Framework_Helpers::log('Plugin deactivated');
+    }
 }

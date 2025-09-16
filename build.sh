@@ -37,7 +37,7 @@ echo "Updated constant: $UPDATED_CONSTANT"
 
 # Update build number in plugin header
 echo "Updating plugin header..."
-sed -i '' "s/\* Version: 1\.0\.0-alpha\.1 (build [0-9]*)/\* Version: 1.0.0-alpha.1 (build $NEW_BUILD)/" wc-api-framework.php
+sed -i '' "s/\* Version: 1\.0\.0-alpha\.2 (build [0-9]*)/\* Version: 1.0.0-alpha.2 (build $NEW_BUILD)/" wc-api-framework.php
 
 # Verify the header was updated
 UPDATED_HEADER=$(grep "\* Version:" wc-api-framework.php)
