@@ -3,7 +3,7 @@
  * Plugin Name: WC API Framework
  * Plugin URI: https://www.gileba.be
  * Description: A flexible framework for integrating external APIs with WooCommerce
- * Version: 1.0.0-alpha.2 (build 7)
+ * Version: 1.0.0-alpha.2 (build 8)
  * Author: Gileba
  * Author URI: https://www.gileba.be
  * License: GPL2
@@ -30,7 +30,7 @@ defined("ABSPATH") || exit();
 
 // Define plugin constants
 define('WC_API_FRAMEWORK_VERSION', '1.0.0-alpha.2');
-define('WC_API_FRAMEWORK_BUILD', '7');
+define('WC_API_FRAMEWORK_BUILD', '8');
 define('WC_API_FRAMEWORK_PLUGIN_FILE', __FILE__);
 define('WC_API_FRAMEWORK_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('WC_API_FRAMEWORK_PLUGIN_SLUG', 'wc-api-framework');
