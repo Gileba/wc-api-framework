@@ -11,13 +11,22 @@ if [ ! -f "wc-api-framework.php" ]; then
     exit 1
 fi
 
-# Get current build number from plugin header
-CURRENT_BUILD=$(grep "\* Version:" wc-api-framework.php | sed "s/.*(build \([0-9]*\)).*/\1/")
+# Get current version and build number from plugin header
+VERSION_LINE=$(grep "\* Version:" wc-api-framework.php)
+echo "Found version line: $VERSION_LINE"
+
+# Extract the full version (e.g., "1.0.0-alpha.2")
+CURRENT_VERSION=$(echo "$VERSION_LINE" | sed "s/.*Version: \([^(]*\).*/\1/" | xargs)
+echo "Current version: $CURRENT_VERSION"
+
+# Extract current build number
+CURRENT_BUILD=$(echo "$VERSION_LINE" | sed "s/.*(build \([0-9]*\)).*/\1/")
 
 # Validate that we got a number
 if ! [[ "$CURRENT_BUILD" =~ ^[0-9]+$ ]]; then
     echo "Error: Could not extract current build number from plugin header"
     echo "Found: $CURRENT_BUILD"
+    echo "Version line: $VERSION_LINE"
     exit 1
 fi
 
@@ -26,6 +35,15 @@ NEW_BUILD=$((CURRENT_BUILD + 1))
 
 echo "Current build: $CURRENT_BUILD"
 echo "New build: $NEW_BUILD"
+
+# Validate version format (basic check)
+if [[ -z "$CURRENT_VERSION" ]]; then
+    echo "Error: Could not extract version from plugin header"
+    echo "Version line: $VERSION_LINE"
+    exit 1
+fi
+
+echo "Version format validation passed: $CURRENT_VERSION"
 
 # Update build number in main file
 echo "Updating build constant..."
@@ -37,7 +55,9 @@ echo "Updated constant: $UPDATED_CONSTANT"
 
 # Update build number in plugin header
 echo "Updating plugin header..."
-sed -i '' "s/\* Version: 1\.0\.0-alpha\.2 (build [0-9]*)/\* Version: 1.0.0-alpha.2 (build $NEW_BUILD)/" wc-api-framework.php
+# Escape special characters in the version for sed
+ESCAPED_VERSION=$(echo "$CURRENT_VERSION" | sed 's/[[\.*^$()+?{|]/\\&/g')
+sed -i '' "s/\* Version: $ESCAPED_VERSION (build [0-9]*)/\* Version: $CURRENT_VERSION (build $NEW_BUILD)/" wc-api-framework.php
 
 # Verify the header was updated
 UPDATED_HEADER=$(grep "\* Version:" wc-api-framework.php)
