@@ -78,13 +78,6 @@ class WC_API_Framework_Admin_Settings {
         <div class="wrap">
             <h1><?php echo __('WC API Framework Settings', 'wc-api-framework'); ?></h1>
             
-            <div class="notice notice-info">
-                <p>
-                    <strong><?php echo __('Framework Version:', 'wc-api-framework'); ?></strong>
-                    <?php echo esc_html(WC_API_FRAMEWORK_VERSION . ' (Build ' . WC_API_FRAMEWORK_BUILD . ')'); ?>
-                </p>
-            </div>
-            
             <?php if ($active_extension): ?>
                 <div class="notice notice-info">
                     <p>
@@ -101,6 +94,10 @@ class WC_API_Framework_Admin_Settings {
                 submit_button();
                 ?>
             </form>
+            
+            <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; color: #666; font-size: 12px;">
+                <?php echo __('WC API Framework', 'wc-api-framework'); ?> <?php echo esc_html(WC_API_FRAMEWORK_VERSION . ' (build ' . WC_API_FRAMEWORK_BUILD . ')'); ?>
+            </div>
         </div>
         <?php
     }

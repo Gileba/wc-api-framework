@@ -4,7 +4,7 @@
 # This script increments the build number and creates a zip file
 
 # Get current build number from plugin header
-CURRENT_BUILD=$(grep "\* Version:" wc-api-framework.php | sed "s/.*-build\([0-9]*\).*/\1/")
+CURRENT_BUILD=$(grep "\* Version:" wc-api-framework.php | sed "s/.*(build \([0-9]*\)).*/\1/")
 
 # Increment build number
 NEW_BUILD=$((CURRENT_BUILD + 1))
@@ -16,7 +16,7 @@ echo "New build: $NEW_BUILD"
 sed -i '' "s/define('WC_API_FRAMEWORK_BUILD', '[^']*');/define('WC_API_FRAMEWORK_BUILD', '$NEW_BUILD');/" wc-api-framework.php
 
 # Update build number in plugin header
-sed -i '' "s/\* Version: 1\.0\.0-alpha\.1-build[0-9]*/\* Version: 1.0.0-alpha.1-build$NEW_BUILD/" wc-api-framework.php
+sed -i '' "s/\* Version: 1\.0\.0-alpha\.1 (build [0-9]*)/\* Version: 1.0.0-alpha.1 (build $NEW_BUILD)/" wc-api-framework.php
 
 # Remove old zip if it exists
 rm -f wc-api-framework.zip
